@@ -228,6 +228,7 @@ class TestInitializeZero(TestCase):
     def test_bad_malloc(self):
         t = AssemblyTest(self, "../coverage-src/initialize_zero.s")
 
+        # malloc(0) will return NULL.
         t.input_scalar("a0", 1 << 30)
         t.call("initialize_zero")
         t.execute(code=26)
