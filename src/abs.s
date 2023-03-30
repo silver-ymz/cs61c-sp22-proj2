@@ -13,6 +13,9 @@ abs:
 
 	# PASTE HERE
 
-	# Epilogue
+	bge a0, zero, done
+	sub a0, x0, a0
 
+	# Epilogue
+done:
 	ret
