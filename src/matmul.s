@@ -73,7 +73,6 @@ inner_loop_start:
 	mv a2, s2
 	li a3, 1
 	mv a4, s5
-	ebreak
 	jal dot
 	sw a0, 0(s6)
 	addi s6, s6, 4
