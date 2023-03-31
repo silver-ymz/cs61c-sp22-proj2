@@ -25,16 +25,56 @@
 write_matrix:
 
 	# Prologue
+	addi sp, sp, -24
+	sw ra, 0(sp)
+	sw s0, 4(sp)
+	sw s1, 8(sp)
+	sw s2, 12(sp)
+	sw a2, 16(sp)
+	sw a3, 20(sp)
+	mv s1, a1
+	mul s2, a2, a3
+	slli s2, s2, 2
 
+	li a1, 1
+	jal fopen
+	bltz a0, error_fopen
+	mv s0, a0  # s0 is file desc
 
+	addi a1, sp, 16
+	li a2, 8
+	li a3, 1
+	jal fwrite
+	li t0, 8
+	bne a0, t0, error_fwrite
 
+	mv a0, s0
+	mv a1, s1
+	mv a2, s2
+	li a3, 1
+	jal fwrite
+	bne a0, s2, error_fwrite
 
-
-
-
-
+	mv a0, s0
+	jal fclose
+	bltz a0, error_fclose
 
 	# Epilogue
-
-
+	lw ra, 0(sp)
+	lw s0, 4(sp)
+	lw s1, 8(sp)
+	lw s2, 12(sp)
+	addi sp, sp, 24
 	ret
+
+error_fopen:
+	li a0 27
+	j exit
+
+error_fwrite:
+	li a0 30
+	j exit
+
+error_fclose:
+	li a0 28
+	j exit
